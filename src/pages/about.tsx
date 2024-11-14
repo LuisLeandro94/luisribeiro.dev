@@ -1,9 +1,9 @@
 import darkPhoto from '../assets/luis.png';
 
-const About = ({ isOpen }: { isOpen: boolean }) => {
+const About = ({ isOpen, }: { isOpen: boolean, }) => {
     return (
-        <>
-            <div className="left-side wrapper">
+        <div className='about'>
+            <div className={isOpen ? "move-left left-side wrapper" : "left-side wrapper"}>
                 <div className='left-side-inner'>
                     <h2 className='marcellus'>I'm Luis Ribeiro</h2>
                     <h1>I am a software engineer</h1>
@@ -13,7 +13,7 @@ const About = ({ isOpen }: { isOpen: boolean }) => {
             </div>
             <div className={isOpen ? "move-left right-side wrapper" : "right-side wrapper"}>
             </div>
-        </>
+        </div>
     );
 }
 
