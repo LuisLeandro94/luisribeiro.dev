@@ -4,7 +4,7 @@ import { useState } from "react";
 function Header({ setOpen, isOpen }: { setOpen: any, isOpen: boolean }) {
     return (
         <header>
-            <h1 className="marcellus">LR</h1>
+            <a href="#" className="marcellus">LR</a>
             <Hamburger toggled={isOpen} toggle={setOpen} />
         </header>
     )

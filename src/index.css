@@ -50,6 +50,10 @@ header {
   z-index: 150;
 }
 
+header a {
+  font-size: 2em;
+}
+
 .drawer {
   display: flex;
   flex-direction: column;
