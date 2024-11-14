@@ -86,7 +86,6 @@ a {
   width: 50%;
   height: 100%;
   display: flex;
-  justify-content: center;
   align-items: center;
 }
 
@@ -138,8 +137,9 @@ a {
   flex-direction: column;
   text-align: start;
   align-items: flex-start;
-  max-width: 50%;
+  max-width: 70%;
   width: 100%;
+  margin-left: 15%;
 }
 
 .left-side-inner h2 {
@@ -147,8 +147,8 @@ a {
   font-size: 2em;
 }
 
-.left-side-inner h1 {
-  margin-top: 0px;
+.Typewriter {
+  margin: 0px;
   font-size: 2em;
 }
 
