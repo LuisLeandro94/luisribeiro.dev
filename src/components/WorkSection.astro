@@ -1,0 +1,68 @@
+---
+import SectionHead from "./SectionHead.astro";
+import ProjectSheet from "./ProjectSheet.astro";
+import ProjectCard from "./ProjectCard.astro";
+import { featuredProject, secondaryProjects } from "../content/projects";
+import { site } from "../content/site";
+---
+
+<section class="sec" id="work" aria-labelledby="work-h">
+  <div class="wrap">
+    <SectionHead
+      number="01"
+      label="Selected work"
+      id="work-h"
+      title="Things I built<br />on my own time."
+      intro="My professional work lives in private codebases, so it's described under Experience. These are personal and study projects, chosen over completeness."
+    />
+
+    <ProjectSheet project={featuredProject} />
+
+    <div class="g pair">
+      {secondaryProjects.map((project) => (
+        <ProjectCard project={project} />
+      ))}
+    </div>
+
+    <p class="more">
+      <a class="lnk" href={site.github.url} target="_blank" rel="noopener">
+        Everything else is on GitHub{" "}
+        <span class="ar" aria-hidden="true">
+          ↗
+        </span>
+      </a>
+    </p>
+  </div>
+</section>
+
+<style>
+  .pair {
+    margin-top: clamp(56px, 7vw, 96px);
+    row-gap: clamp(48px, 6vw, 72px);
+  }
+
+  @media (min-width: 640px) {
+    .pair :global(.card:nth-child(1)) {
+      grid-column: 1 / 5;
+    }
+
+    .pair :global(.card:nth-child(2)) {
+      grid-column: 5 / 9;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .pair :global(.card:nth-child(1)) {
+      grid-column: 1 / 7;
+    }
+
+    .pair :global(.card:nth-child(2)) {
+      grid-column: 7 / 13;
+    }
+  }
+
+  .more {
+    margin-top: var(--s-7);
+    font-size: var(--t-small);
+  }
+</style>

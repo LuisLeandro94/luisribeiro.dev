@@ -1,0 +1,109 @@
+---
+import "../styles/tokens.css";
+import "../styles/base.css";
+import { site } from "../content/site";
+import GridOverlay from "../components/GridOverlay.astro";
+import CommandMenu from "../components/CommandMenu.astro";
+import MobileIndex from "../components/MobileIndex.astro";
+import Toast from "../components/Toast.astro";
+
+// Preload only the Latin subset actually used by this site's (English) copy —
+// the two files a visitor's browser will really fetch, per HANDOFF.md §11.
+import geistLatinWoff2 from "@fontsource-variable/geist/files/geist-latin-wght-normal.woff2?url";
+import geistMonoLatinWoff2 from "@fontsource-variable/geist-mono/files/geist-mono-latin-wght-normal.woff2?url";
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const { title = site.title, description = site.description } = Astro.props;
+const canonicalURL = new URL(Astro.url.pathname, site.url);
+const ogImageURL = new URL("/og.png", site.url);
+
+const personJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: site.name,
+  jobTitle: site.role,
+  worksFor: {
+    "@type": "Organization",
+    name: "VFX Financial",
+  },
+  address: {
+    "@type": "PostalAddress",
+    addressCountry: "PT",
+  },
+  email: `mailto:${site.email}`,
+  url: site.url,
+  sameAs: [site.github.url, site.linkedin.url],
+};
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalURL} />
+
+    <link rel="preload" href={geistLatinWoff2} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={geistMonoLatinWoff2} as="font" type="font/woff2" crossorigin />
+
+    <meta name="robots" content="index,follow" />
+
+    <!-- Open Graph / Twitter -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:image" content={ogImageURL} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageURL} />
+
+    <!-- Favicon -->
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+
+    <meta name="theme-color" content="#f1f2ee" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0d0e0f" media="(prefers-color-scheme: dark)" />
+
+    <script type="application/ld+json" set:html={JSON.stringify(personJsonLd)} />
+    <script is:inline>
+      // Runs before paint to avoid a flash of the wrong theme or grid state.
+      // Kept tiny and inline (not the module bundle) on purpose.
+      (function () {
+        try {
+          var theme = localStorage.getItem("lr-theme");
+          if (theme === "light" || theme === "dark") {
+            document.documentElement.setAttribute("data-theme", theme);
+          }
+          if (localStorage.getItem("lr-grid") === "1") {
+            document.documentElement.classList.add("show-grid");
+          }
+        } catch {
+          /* localStorage unavailable (private mode, blocked storage) — fall back to defaults */
+        }
+      })();
+    </script>
+  </head>
+  <body>
+    <a class="skip" href="#main">
+      Skip to content
+    </a>
+    <slot />
+    <GridOverlay />
+    <CommandMenu />
+    <MobileIndex />
+    <Toast />
+    <script src="../scripts/main.ts"></script>
+  </body>
+</html>

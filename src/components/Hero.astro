@@ -1,0 +1,185 @@
+---
+import { site } from "../content/site";
+---
+
+<section class="hero" id="top" aria-labelledby="hero-name">
+  <div class="wrap">
+    <div class="g">
+      <div class="kick data">
+        <span>
+          <b>Frontend</b> engineering
+        </span>
+        <span>
+          {site.location} · <b data-clock>—</b> local time
+        </span>
+      </div>
+      <h1 id="hero-name">
+        <span>Luís</span>
+        <span>Ribeiro</span>
+      </h1>
+      <p class="role">
+        <b>Software engineer, specialising in frontend.</b>
+        <br />
+        Currently at VFX Financial.
+      </p>
+      <p class="lead">
+        I build the interfaces brokers use to run <em>payments, FX trades and swaps</em>, and the
+        permissions and validation that keep them correct.
+      </p>
+      <div class="ctas">
+        <a class="lnk" href="#work">
+          Selected work{" "}
+          <span class="ar dn" aria-hidden="true">
+            ↓
+          </span>
+        </a>
+        <a class="lnk" href="#contact">
+          Get in touch{" "}
+          <span class="ar" aria-hidden="true">
+            ↗
+          </span>
+        </a>
+        <a class="lnk" href={site.cvHref} download data-cv>
+          Download CV (PDF){" "}
+          <span class="ar dn" aria-hidden="true">
+            ↓
+          </span>
+        </a>
+      </div>
+      <dl class="meta rule">
+        <div>
+          <dt class="label">Experience</dt>
+          <dd class="data">
+            <b>Since Sept 2021</b>
+            <br />
+            Production frontend
+          </dd>
+        </div>
+        <div>
+          <dt class="label">At work</dt>
+          <dd class="data">
+            <b>Blazor · C#</b>
+            <br />
+            Before: Vue, React
+          </dd>
+        </div>
+        <div>
+          <dt class="label">Own projects</dt>
+          <dd class="data">
+            <b>Next.js · TypeScript</b>
+            <br />
+            React, MongoDB
+          </dd>
+        </div>
+        <div>
+          <dt class="label">Availability</dt>
+          <dd class="data">
+            <b>Open to talk</b>
+            <br />
+            Roles and freelance
+          </dd>
+        </div>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    padding-block: clamp(48px, 8vw, 120px) clamp(40px, 6vw, 72px);
+  }
+
+  .hero .g {
+    row-gap: 0;
+  }
+
+  .hero .kick {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 20px;
+  }
+
+  .hero h1 {
+    font-size: var(--t-display);
+    line-height: 0.86;
+    letter-spacing: -0.05em;
+    font-weight: 600;
+    margin-top: clamp(28px, 4vw, 48px);
+  }
+
+  .hero h1 span {
+    display: block;
+  }
+
+  .hero .role {
+    margin-top: var(--s-5);
+    font-size: var(--t-small);
+    line-height: 1.45;
+  }
+
+  .hero .role b {
+    font-weight: 600;
+  }
+
+  .hero .lead {
+    margin-top: clamp(32px, 4.5vw, 64px);
+  }
+
+  .hero .ctas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px 28px;
+    margin-top: var(--s-6);
+    font-size: var(--t-small);
+  }
+
+  .hero .meta {
+    margin-top: clamp(48px, 7vw, 96px);
+    padding-top: var(--s-3);
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--s-4) var(--gutter);
+  }
+
+  .hero .meta div {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  @media (min-width: 640px) {
+    .hero .role {
+      grid-column: 1 / 6;
+    }
+
+    .hero .lead {
+      grid-column: 1 / 8;
+    }
+
+    .hero .meta {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .hero h1 {
+      grid-column: 1 / 9;
+      grid-row: 2;
+    }
+
+    .hero .role {
+      grid-column: 9 / 13;
+      grid-row: 2;
+      align-self: end;
+      margin: 0 0 0.6em;
+    }
+
+    .hero .lead {
+      grid-column: 1 / 9;
+    }
+
+    .hero .ctas {
+      grid-column: 1 / 9;
+    }
+  }
+</style>

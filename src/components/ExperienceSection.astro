@@ -1,0 +1,32 @@
+---
+import SectionHead from "./SectionHead.astro";
+import ExperienceTrack from "./ExperienceTrack.astro";
+import RoleRow from "./RoleRow.astro";
+import { roles } from "../content/experience";
+---
+
+<section class="sec" id="experience" aria-labelledby="exp-h">
+  <div class="wrap">
+    <SectionHead
+      number="02"
+      label="Experience"
+      id="exp-h"
+      title="Five years, three teams, one direction."
+      intro="From full-stack beginnings in React and C#, to frontend at Prozis, to a core frontend role on a financial platform."
+    />
+    <div class="sec-body">
+      <ExperienceTrack />
+    </div>
+    <div class="roles">
+      {roles.map((role) => (
+        <RoleRow role={role} />
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .roles {
+    margin-top: var(--s-7);
+  }
+</style>

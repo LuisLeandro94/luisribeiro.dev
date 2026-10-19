@@ -1,0 +1,21 @@
+import { initClock } from "./clock";
+import { initTheme } from "./theme";
+import { initGridOverlay } from "./grid-overlay";
+import { initCopyEmail } from "./copy-email";
+import { initCommandMenu } from "./command-menu";
+import { initMobileIndex } from "./mobile-index";
+import { initActiveNav } from "./active-nav";
+import { initReveal } from "./reveal";
+import { initExperienceTrack } from "./experience-track";
+import { initProjectileSim } from "./sim";
+
+initTheme();
+initGridOverlay();
+initClock();
+initCopyEmail();
+initCommandMenu();
+initMobileIndex();
+initActiveNav();
+initReveal();
+initExperienceTrack();
+initProjectileSim();

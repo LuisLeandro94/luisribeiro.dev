@@ -1,0 +1,113 @@
+---
+import { Image } from "astro:assets";
+import SectionHead from "./SectionHead.astro";
+import portrait from "../assets/images/portrait.webp";
+---
+
+<section class="sec about" id="about" aria-labelledby="about-h">
+  <div class="wrap">
+    <SectionHead number="04" label="About" id="about-h" title="About" hiddenTitle />
+    <div class="g sec-body">
+      <figure class="portrait">
+        <Image
+          src={portrait}
+          alt="Luís Ribeiro, arms crossed, smiling, in a green pinstripe shirt outdoors"
+          widths={[320, 480, 720]}
+          sizes="(min-width: 1024px) 25vw, (min-width: 640px) 33vw, 60vw"
+          loading="lazy"
+        />
+      </figure>
+      <div class="about-txt">
+        <p>
+          I'm Luís, a software engineer in Portugal. I like the part of frontend that's easy to
+          skip.
+        </p>
+        <p class="body-2">
+          The permission that hides a button from the wrong person. The validation message that
+          tells you exactly what to fix. The state that's still right after a refresh. On a platform
+          where people move money, those details are the product.
+        </p>
+        <p class="body-2">
+          I started in 2021 writing React and C# at Codepoint, spent a year on Vue at Prozis, and
+          now work remotely on a broker platform at VFX Financial. Outside work I build things for
+          real problems, like the app that ran my wedding.
+        </p>
+        <dl class="spec facts">
+          <dt>Education</dt>
+          <dd>CTeSP Web Development and Multimedia, IPCA, 2020–2022</dd>
+          <dt>English</dt>
+          <dd>C2 Proficient (EF SET)</dd>
+          <dt>Languages</dt>
+          <dd>TypeScript, JavaScript, C#, HTML, CSS</dd>
+        </dl>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .about .g {
+    row-gap: var(--s-7);
+  }
+
+  .portrait {
+    aspect-ratio: 4 / 5;
+    max-width: 100%;
+    background: var(--paper-2);
+    border: 1px solid var(--rule);
+    position: relative;
+  }
+
+  .portrait :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: grayscale(1) contrast(1.04);
+    transition: filter var(--d-reveal) var(--ease);
+  }
+
+  .portrait:hover :global(img) {
+    filter: none;
+  }
+
+  .about-txt {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-5);
+    font-size: clamp(1.125rem, 1rem + 0.45vw, 1.375rem);
+    line-height: 1.5;
+    letter-spacing: -0.008em;
+    max-width: 40em;
+  }
+
+  .about-txt p:first-child {
+    font-size: var(--t-lead);
+    line-height: 1.25;
+    letter-spacing: -0.015em;
+  }
+
+  .facts {
+    margin-top: var(--s-3);
+    max-width: 34em;
+  }
+
+  @media (min-width: 640px) {
+    .about :global(.portrait) {
+      grid-column: 1 / 4;
+    }
+
+    .about :global(.about-txt) {
+      grid-column: 4 / 9;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .about :global(.portrait) {
+      grid-column: 1 / 4;
+    }
+
+    .about :global(.about-txt) {
+      grid-column: 5 / 12;
+    }
+  }
+</style>

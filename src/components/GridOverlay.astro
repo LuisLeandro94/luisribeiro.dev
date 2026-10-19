@@ -1,0 +1,83 @@
+---
+// Decorative column overlay matching the real .wrap/.g grid exactly, so it
+// demonstrates layout precision. Non-interactive and hidden from assistive tech.
+---
+
+<div class="overlay" aria-hidden="true">
+  <div class="wrap">
+    <div class="g">
+      {Array.from({ length: 12 }).map(() => (
+        <i />
+      ))}
+    </div>
+  </div>
+  <span class="badge" id="gridBadge">
+    12 col · 24 gutter
+  </span>
+</div>
+
+<style>
+  .overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 70;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 250ms var(--ease);
+  }
+
+  .overlay .wrap,
+  .overlay .g {
+    height: 100%;
+  }
+
+  .overlay i {
+    background: var(--grid-fill);
+    border-inline: 1px solid var(--grid-line);
+  }
+
+  .overlay .g > i {
+    grid-column: auto;
+  }
+
+  .overlay i:nth-child(n + 5) {
+    display: none;
+  }
+
+  @media (min-width: 640px) {
+    .overlay i:nth-child(n + 5) {
+      display: block;
+    }
+
+    .overlay i:nth-child(n + 9) {
+      display: none;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .overlay i:nth-child(n + 9) {
+      display: block;
+    }
+  }
+
+  :global(html.show-grid) .overlay {
+    opacity: 1;
+  }
+
+  .overlay .badge {
+    position: fixed;
+    right: max(12px, env(safe-area-inset-right, 0px));
+    bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+    background: var(--signal);
+    color: var(--on-signal);
+    font: 500 0.7rem var(--f-mono);
+    padding: 4px 8px;
+    letter-spacing: 0.04em;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .overlay {
+      transition: none;
+    }
+  }
+</style>

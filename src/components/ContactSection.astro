@@ -1,0 +1,124 @@
+---
+import SectionHead from "./SectionHead.astro";
+import { site } from "../content/site";
+---
+
+<section class="sec contact" id="contact" aria-labelledby="contact-h">
+  <div class="wrap">
+    <SectionHead
+      number="05"
+      label="Contact"
+      id="contact-h"
+      title="Write to me."
+      intro="Hiring for frontend, or need someone for a freelance project? Email is the fastest way to reach me."
+    />
+    <div class="mail">
+      <a class="addr" href={`mailto:${site.email}`}>
+        {site.email}
+      </a>
+      <button class="btn solid" type="button" data-copy-email>
+        Copy address
+      </button>
+    </div>
+    <div class="g">
+      <div class="rows">
+        <a href={site.linkedin.url} target="_blank" rel="noopener">
+          <span class="nm">LinkedIn</span>
+          <span class="data">{site.linkedin.handle} ↗</span>
+        </a>
+        <a href={site.github.url} target="_blank" rel="noopener">
+          <span class="nm">GitHub</span>
+          <span class="data">{site.github.handle} ↗</span>
+        </a>
+        <a href={site.cvHref} download data-cv>
+          <span class="nm">CV</span>
+          <span class="data">PDF ↓</span>
+        </a>
+      </div>
+      <p class="note data">
+        Based in {site.location}, <b data-clock>—</b> local time.
+      </p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .contact {
+    padding-bottom: var(--s-9);
+  }
+
+  .mail {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--s-4) var(--s-5);
+    margin-top: var(--s-5);
+  }
+
+  .mail .addr {
+    font-size: clamp(1.6rem, 0.6rem + 4.6vw, 5.5rem);
+    font-weight: 600;
+    letter-spacing: -0.045em;
+    line-height: 1;
+    overflow-wrap: anywhere;
+    user-select: all;
+    text-decoration: none;
+  }
+
+  .mail .addr:hover {
+    color: var(--signal);
+  }
+
+  .rows {
+    margin-top: clamp(48px, 6vw, 80px);
+    border-top: 1px solid var(--ink);
+  }
+
+  .rows a {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 12px;
+    align-items: baseline;
+    padding: 18px 0;
+    border-bottom: 1px solid var(--rule);
+    text-decoration: none;
+    transition:
+      padding var(--d-reveal) var(--ease),
+      color var(--d-micro);
+  }
+
+  .rows a:hover,
+  .rows a:focus-visible {
+    color: var(--signal);
+    padding-left: 8px;
+  }
+
+  .rows .nm {
+    font-size: clamp(1.25rem, 1rem + 1vw, 2rem);
+    font-weight: 600;
+    letter-spacing: -0.025em;
+  }
+
+  .rows .data {
+    white-space: nowrap;
+  }
+
+  .note {
+    margin-top: var(--s-5);
+    color: var(--ink-2);
+    font-size: var(--t-small);
+    max-width: 52ch;
+  }
+
+  @media (min-width: 1024px) {
+    .rows {
+      grid-column: 1 / 9;
+    }
+
+    .note {
+      grid-column: 9 / 13;
+      margin-top: clamp(48px, 6vw, 80px);
+      padding-top: 18px;
+    }
+  }
+</style>

@@ -1,0 +1,133 @@
+---
+import { Image } from "astro:assets";
+import type { SecondaryProject } from "../content/projects";
+
+interface Props {
+  project: SecondaryProject;
+}
+
+const { project } = Astro.props;
+---
+
+<article class="card rule soft" aria-labelledby={project.id}>
+  <div class="top">
+    <p class="label">{project.label}</p>
+    <p class="data">{project.year}</p>
+  </div>
+  {project.image ? (
+    <figure class="media">
+      <Image
+        src={project.image.src}
+        alt={project.image.alt}
+        widths={[380, 580, 960]}
+        sizes="(min-width: 1024px) 580px, (min-width: 640px) 45vw, 90vw"
+        loading="lazy"
+      />
+    </figure>
+  ) : (
+    <figure class="media" aria-label="Animated re-creation of the projectile simulation">
+      <canvas class="sim" id="sim" aria-hidden="true" />
+      <figcaption class="sim-note">
+        <span class="data">g = 9.81 m/s² · wall hit −10% vₓ</span>
+      </figcaption>
+    </figure>
+  )}
+  <h3 class="h3" id={project.id}>
+    {project.title}
+  </h3>
+  <p>{project.description}</p>
+  <div class="links">
+    {project.links.map((link) => (
+      <a class="lnk" href={link.href} target="_blank" rel="noopener">
+        {link.label}{" "}
+        <span class="ar" aria-hidden="true">
+          ↗
+        </span>
+      </a>
+    ))}
+  </div>
+</article>
+
+<style>
+  .card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-4);
+    padding-top: var(--s-4);
+  }
+
+  .top {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .media {
+    position: relative;
+    aspect-ratio: 16 / 10;
+    max-width: 100%;
+    background: var(--paper-2);
+    overflow: hidden;
+    border: 1px solid var(--rule);
+  }
+
+  .media :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top;
+    filter: grayscale(1) contrast(1.05);
+    transition:
+      filter var(--d-reveal) var(--ease),
+      transform 800ms var(--ease);
+  }
+
+  .card:hover .media :global(img),
+  .card:focus-within .media :global(img) {
+    filter: none;
+    transform: scale(1.015);
+  }
+
+  canvas.sim {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .sim-note {
+    position: absolute;
+    z-index: 1;
+    background: var(--paper-2);
+    padding: 8px 10px;
+    margin: -8px -10px;
+    left: var(--s-4);
+    top: var(--s-4);
+  }
+
+  .card .h3 {
+    font-size: clamp(1.375rem, 1.2rem + 0.7vw, 1.875rem);
+    letter-spacing: -0.025em;
+    line-height: 1.05;
+  }
+
+  .card p {
+    color: var(--ink-2);
+    font-size: var(--t-small);
+    max-width: 52ch;
+  }
+
+  .links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 24px;
+    font-size: var(--t-small);
+    margin-top: auto;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .card:hover .media :global(img),
+    .card:focus-within .media :global(img) {
+      transform: none;
+    }
+  }
+</style>

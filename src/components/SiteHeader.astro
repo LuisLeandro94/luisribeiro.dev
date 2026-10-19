@@ -1,0 +1,151 @@
+---
+import { site, navSections } from "../content/site";
+---
+
+<header class="site">
+  <div class="wrap">
+    <div class="g">
+      <a class="brand" href="#top" aria-label={`${site.name}, back to top`}>
+        <b>{site.name}</b>
+        <span>{site.role}</span>
+      </a>
+      <nav class="nav" aria-label="Sections">
+        {navSections.map((section) => (
+          <a href={`#${section.id}`}>
+            <span>{section.number}</span>
+            {section.label}
+          </a>
+        ))}
+      </nav>
+      <div class="hdr-actions">
+        <a class="btn-k" href={site.cvHref} download data-cv>
+          CV <span aria-hidden="true">↓</span>
+        </a>
+        <button class="btn-k k-desk" type="button" data-open-cmd aria-haspopup="dialog">
+          Menu <kbd data-kbd-hint>Ctrl K</kbd>
+        </button>
+        <button class="btn-k k-mob" type="button" data-open-idx aria-haspopup="dialog">
+          Index
+        </button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<style>
+  .site {
+    position: sticky;
+    top: env(safe-area-inset-top, 0px);
+    z-index: 50;
+    background: color-mix(in srgb, var(--paper) 92%, transparent);
+    backdrop-filter: saturate(1.2) blur(10px);
+    -webkit-backdrop-filter: saturate(1.2) blur(10px);
+  }
+
+  .site .g {
+    align-items: center;
+    min-height: 56px;
+    border-bottom: 1px solid var(--ink);
+  }
+
+  .brand {
+    grid-column: 1 / 3 !important;
+    display: flex;
+    flex-direction: column;
+    line-height: 1.15;
+    text-decoration: none;
+  }
+
+  .brand b {
+    font-weight: 600;
+    font-size: 0.95rem;
+    letter-spacing: -0.01em;
+  }
+
+  .brand span {
+    font: 400 0.7rem var(--f-mono);
+    color: var(--graphite);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .nav {
+    display: none;
+  }
+
+  .hdr-actions {
+    grid-column: 3 / -1 !important;
+    justify-self: end;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .btn-k.k-desk {
+    display: none;
+  }
+
+  @media (min-width: 1024px) {
+    .brand {
+      grid-column: 1 / 4 !important;
+    }
+
+    .nav {
+      display: flex;
+      grid-column: 4 / 10;
+      gap: clamp(12px, 1.6vw, 28px);
+      font: 500 var(--t-label) var(--f-mono);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .nav a {
+      text-decoration: none;
+      color: var(--graphite);
+      display: inline-flex;
+      gap: 6px;
+      padding-block: 6px;
+      transition: color var(--d-micro);
+    }
+
+    .nav a span {
+      color: var(--rule);
+      transition: color var(--d-micro);
+    }
+
+    .nav a:hover,
+    .nav a[aria-current="true"] {
+      color: var(--ink);
+    }
+
+    .nav a[aria-current="true"] span {
+      color: var(--signal);
+    }
+
+    .hdr-actions {
+      grid-column: 10 / -1 !important;
+    }
+
+    .btn-k.k-desk {
+      display: inline-flex;
+    }
+
+    .btn-k.k-mob {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  // Shows the platform-correct shortcut hint: Cmd K on macOS, Ctrl K elsewhere.
+  const hint = document.querySelector<HTMLElement>("[data-kbd-hint]");
+  if (hint) {
+    const platform =
+      (navigator as Navigator & { userAgentData?: { platform?: string } }).userAgentData
+        ?.platform ??
+      navigator.platform ??
+      "";
+    const isMac = /mac/i.test(platform);
+    hint.textContent = isMac ? "⌘K" : "Ctrl K";
+  }
+</script>

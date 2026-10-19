@@ -1,0 +1,103 @@
+---
+import { site } from "../content/site";
+const year = new Date().getFullYear();
+---
+
+<footer class="foot">
+  <div class="wrap">
+    <div class="g">
+      <div class="col data">
+        <b>
+          © {year} {site.name}
+        </b>
+        <span>Software engineer, {site.location}</span>
+      </div>
+      <div class="col data">
+        <span class="label">Colophon</span>
+        <span>Set in Geist and Geist Mono. 12 / 8 / 4 column grid.</span>
+        <span>
+          <button class="txt" type="button" data-grid-btn aria-pressed="false">
+            Show the grid
+          </button>
+          ·{" "}
+          <button class="txt" type="button" data-theme-btn>
+            Theme: system
+          </button>
+        </span>
+      </div>
+      <div class="col data">
+        <a class="lnk" href="#top">
+          Back to top{" "}
+          <span class="ar" aria-hidden="true">
+            ↑
+          </span>
+        </a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .foot {
+    padding-block: 0 var(--s-7);
+  }
+
+  .foot .g {
+    row-gap: var(--s-5);
+    border-top: 1px solid var(--ink);
+    padding-top: var(--s-5);
+  }
+
+  .col {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .txt {
+    background: none;
+    border: 0;
+    padding: 0;
+    color: inherit;
+    font: inherit;
+    text-transform: inherit;
+    letter-spacing: inherit;
+    cursor: pointer;
+    text-align: left;
+    text-decoration: underline dotted var(--graphite);
+    text-underline-offset: 3px;
+  }
+
+  .txt:hover,
+  .txt:focus-visible {
+    color: var(--signal);
+  }
+
+  @media (min-width: 640px) {
+    .col:nth-child(1) {
+      grid-column: 1 / 4;
+    }
+
+    .col:nth-child(2) {
+      grid-column: 4 / 7;
+    }
+
+    .col:nth-child(3) {
+      grid-column: 7 / 9;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .col:nth-child(1) {
+      grid-column: 1 / 5;
+    }
+
+    .col:nth-child(2) {
+      grid-column: 5 / 9;
+    }
+
+    .col:nth-child(3) {
+      grid-column: 10 / 13;
+    }
+  }
+</style>

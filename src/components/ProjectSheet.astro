@@ -1,0 +1,144 @@
+---
+import { Image } from "astro:assets";
+import type { FeaturedProject } from "../content/projects";
+
+interface Props {
+  project: FeaturedProject;
+}
+
+const { project } = Astro.props;
+---
+
+<article class="g sheet sec-body rule soft" aria-labelledby={project.id}>
+  <figure class="media shots">
+    <Image
+      class="s-main"
+      src={project.media.main.src}
+      alt={project.media.main.alt}
+      widths={[480, 760, 1100]}
+      sizes="(min-width: 1024px) 760px, 90vw"
+    />
+    <Image
+      class="s-sub"
+      src={project.media.sub.src}
+      alt={project.media.sub.alt}
+      widths={[320, 480, 700]}
+      sizes="(min-width: 1024px) 480px, 60vw"
+    />
+    <figcaption class="sr">Two screens from the Wedding Management App</figcaption>
+  </figure>
+  <div class="info">
+    <p class="label">{project.label}</p>
+    <h3 class="h3" id={project.id}>
+      {project.title}
+    </h3>
+    <p class="body-2">{project.description}</p>
+    <dl class="spec">
+      {project.spec.map((item) => (
+        <>
+          <dt>{item.term}</dt>
+          <dd>{item.value}</dd>
+        </>
+      ))}
+    </dl>
+    {(project.caseStudyHref || project.liveHref) && (
+      <div class="links">
+        {project.caseStudyHref && (
+          <a class="lnk" href={project.caseStudyHref}>
+            Case study{" "}
+            <span class="ar" aria-hidden="true">
+              →
+            </span>
+          </a>
+        )}
+        {project.liveHref && (
+          <a class="lnk" href={project.liveHref} target="_blank" rel="noopener">
+            Live site{" "}
+            <span class="ar" aria-hidden="true">
+              ↗
+            </span>
+          </a>
+        )}
+      </div>
+    )}
+  </div>
+</article>
+
+<style>
+  .sheet {
+    padding-top: var(--s-4);
+    row-gap: var(--s-6);
+  }
+
+  .media {
+    position: relative;
+    aspect-ratio: 16 / 10;
+    max-width: 100%;
+    background: var(--paper-2);
+    overflow: hidden;
+    border: 1px solid var(--rule);
+  }
+
+  .media.shots {
+    background: var(--paper-2);
+  }
+
+  .media.shots :global(img) {
+    position: absolute;
+    height: auto;
+    object-fit: contain;
+    border: 1px solid var(--rule);
+    box-shadow: 0 18px 40px -24px rgba(0, 0, 0, 0.45);
+    filter: grayscale(1) contrast(1.05);
+    transition:
+      filter var(--d-reveal) var(--ease),
+      transform 800ms var(--ease);
+  }
+
+  .sheet:hover .media :global(img),
+  .sheet:focus-within .media :global(img) {
+    filter: none;
+  }
+
+  .media.shots :global(.s-main) {
+    left: 5%;
+    top: 7%;
+    width: 68%;
+  }
+
+  .media.shots :global(.s-sub) {
+    right: 5%;
+    bottom: 8%;
+    width: 44%;
+    transition-delay: 60ms;
+  }
+
+  .info {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-4);
+  }
+
+  .info .h3 {
+    font-size: clamp(1.75rem, 1.3rem + 1.6vw, 2.75rem);
+    line-height: 1;
+    letter-spacing: -0.03em;
+  }
+
+  .links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 24px;
+    font-size: var(--t-small);
+  }
+
+  @media (min-width: 1024px) {
+    .sheet .media {
+      grid-column: 1 / 8;
+    }
+
+    .sheet .info {
+      grid-column: 8 / 13;
+    }
+  }
+</style>

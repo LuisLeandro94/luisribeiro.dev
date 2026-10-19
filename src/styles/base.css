@@ -1,0 +1,374 @@
+/*
+  Global reset, type primitives, grid system and shared link/button/rule
+  vocabulary. Component-specific layout lives in each component's scoped
+  styles. See design-reference/HANDOFF.md §4–5 for the typography and grid
+  specification this file implements.
+*/
+@import "@fontsource-variable/geist";
+@import "@fontsource-variable/geist-mono";
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 72px;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font: 400 var(--t-body) / 1.55 var(--f-sans);
+  font-feature-settings: "ss01";
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  transition:
+    background var(--d-micro),
+    color var(--d-micro);
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+h1,
+h2,
+h3,
+p,
+dl,
+dd,
+ol,
+ul,
+figure {
+  margin: 0;
+}
+
+ul,
+ol {
+  padding: 0;
+  list-style: none;
+}
+
+h1,
+h2,
+h3 {
+  text-wrap: balance;
+  font-weight: 600;
+}
+
+a {
+  color: inherit;
+}
+
+button {
+  font-family: inherit;
+}
+
+::selection {
+  background: var(--signal);
+  color: var(--on-signal);
+}
+
+:focus-visible {
+  outline: 2px solid var(--signal);
+  outline-offset: 3px;
+  border-radius: 1px;
+}
+
+.sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.skip {
+  position: absolute;
+  left: var(--margin);
+  top: -60px;
+  z-index: 100;
+  background: var(--ink);
+  color: var(--paper);
+  padding: 8px 12px;
+  font: 500 var(--t-label) var(--f-mono);
+  text-decoration: none;
+  transition: top var(--d-micro);
+}
+
+.skip:focus {
+  top: calc(8px + env(safe-area-inset-top, 0px));
+}
+
+/* container + grid */
+.wrap {
+  max-width: var(--max);
+  margin: 0 auto;
+  padding-left: max(var(--margin), env(safe-area-inset-left, 0px));
+  padding-right: max(var(--margin), env(safe-area-inset-right, 0px));
+}
+
+.g {
+  display: grid;
+  grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
+  column-gap: var(--gutter);
+}
+
+.g > * {
+  grid-column: 1 / -1;
+  min-width: 0;
+}
+
+/* type primitives */
+.label {
+  font: 500 var(--t-label) / 1.4 var(--f-mono);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--graphite);
+}
+
+.data {
+  font: 400 0.8125rem / 1.5 var(--f-mono);
+  font-variant-numeric: tabular-nums;
+  color: var(--graphite);
+}
+
+.data b,
+.label b {
+  color: var(--ink);
+  font-weight: 500;
+}
+
+.lead {
+  font-size: var(--t-lead);
+  line-height: 1.25;
+  letter-spacing: -0.015em;
+  font-weight: 400;
+}
+
+.lead em {
+  font-style: normal;
+  color: var(--signal);
+}
+
+.h2 {
+  font-size: var(--t-h2);
+  line-height: 0.95;
+  letter-spacing: -0.035em;
+}
+
+.h3 {
+  font-size: var(--t-h3);
+  line-height: 1.2;
+  letter-spacing: -0.012em;
+}
+
+.body-2 {
+  color: var(--ink-2);
+}
+
+/* link pattern: text + arrow, underline grows left to right */
+.lnk {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.4em;
+  text-decoration: none;
+  font-weight: 500;
+  background: linear-gradient(currentColor, currentColor) 0 100% / 0 1px no-repeat;
+  transition:
+    background-size var(--d-reveal) var(--ease),
+    color var(--d-micro);
+}
+
+.lnk:hover,
+.lnk:focus-visible {
+  background-size: 100% 1px;
+  color: var(--signal);
+}
+
+.lnk .ar {
+  font-family: var(--f-mono);
+  font-size: 0.85em;
+  transition: transform var(--d-micro) var(--ease);
+}
+
+.lnk:hover .ar,
+.lnk:focus-visible .ar {
+  transform: translate(2px, -2px);
+}
+
+.lnk:hover .ar.dn,
+.lnk:focus-visible .ar.dn {
+  transform: translateY(2px);
+}
+
+/* hairline that draws in on scroll (progressive enhancement, see reveal.ts) */
+.rule {
+  position: relative;
+}
+
+.rule::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 1px;
+  background: var(--ink);
+  transform-origin: 0 50%;
+  transition: transform var(--d-rule) var(--ease);
+}
+
+.rule.soft::before {
+  background: var(--rule);
+}
+
+.pre.rule::before {
+  transform: scaleX(0);
+}
+
+.pre-fade {
+  opacity: 0;
+  transform: translateY(8px);
+}
+
+.fade {
+  transition:
+    opacity var(--d-reveal) var(--ease),
+    transform var(--d-reveal) var(--ease);
+}
+
+/* buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 40px;
+  padding: 0 14px;
+  border: 1px solid var(--ink);
+  background: transparent;
+  color: var(--ink);
+  font: 500 var(--t-label) var(--f-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  border-radius: 2px;
+  cursor: pointer;
+  text-decoration: none;
+  transition:
+    background var(--d-micro),
+    color var(--d-micro),
+    border-color var(--d-micro);
+}
+
+.btn:hover,
+.btn:focus-visible {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.btn.solid {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.btn.solid:hover,
+.btn.solid:focus-visible {
+  background: var(--signal);
+  border-color: var(--signal);
+  color: var(--on-signal);
+}
+
+.btn-k {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  height: 32px;
+  padding: 0 10px;
+  border: 1px solid var(--rule);
+  background: transparent;
+  color: var(--ink);
+  font: 500 0.72rem var(--f-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-radius: 2px;
+  cursor: pointer;
+  text-decoration: none;
+  transition:
+    border-color var(--d-micro),
+    background var(--d-micro);
+}
+
+.btn-k:hover,
+.btn-k:focus-visible {
+  border-color: var(--ink);
+}
+
+.btn-k kbd {
+  font: inherit;
+  color: var(--graphite);
+}
+
+/* section rhythm, shared by every numbered section */
+.sec {
+  padding-top: var(--section);
+}
+
+.sec-body {
+  margin-top: clamp(40px, 6vw, 80px);
+}
+
+/* spec list: mono key / value rows, shared by ProjectSheet and About */
+.spec {
+  display: grid;
+  grid-template-columns: minmax(80px, auto) 1fr;
+  gap: 0;
+  border-top: 1px solid var(--rule);
+}
+
+.spec dt,
+.spec dd {
+  padding: 9px 0;
+  border-bottom: 1px solid var(--rule);
+  font-size: var(--t-small);
+}
+
+.spec dt {
+  font: 500 var(--t-label) / 1.9 var(--f-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--graphite);
+  padding-right: var(--s-4);
+}
+
+.spec dd {
+  min-width: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0ms !important;
+    animation-duration: 0ms !important;
+  }
+
+  .pre.rule::before {
+    transform: none;
+  }
+
+  .pre-fade {
+    opacity: 1;
+    transform: none;
+  }
+}

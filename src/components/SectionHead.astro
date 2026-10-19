@@ -1,0 +1,67 @@
+---
+interface Props {
+  number: string;
+  label: string;
+  id: string;
+  title: string;
+  /** Visually hidden when the section already has a visible heading elsewhere (About). */
+  hiddenTitle?: boolean;
+  intro?: string;
+}
+
+const { number, label, id, title, hiddenTitle = false, intro } = Astro.props;
+---
+
+<div class="g sec-head rule">
+  <p class="label num">
+    <b>{number}</b>
+    {label}
+  </p>
+  <h2 class:list={["h2", { sr: hiddenTitle }]} id={id}>
+    <Fragment set:html={title} />
+  </h2>
+  {intro && <p class="intro">{intro}</p>}
+</div>
+
+<style>
+  .sec-head {
+    padding-top: var(--s-3);
+    row-gap: var(--s-4);
+  }
+
+  .sec-head .num {
+    display: flex;
+    gap: 12px;
+  }
+
+  .sec-head .num b {
+    color: var(--signal);
+  }
+
+  .sec-head .intro {
+    color: var(--ink-2);
+    font-size: var(--t-small);
+    max-width: 44ch;
+  }
+
+  .sec-head .h2 {
+    margin-top: var(--s-5);
+  }
+
+  @media (min-width: 1024px) {
+    .sec-head .num {
+      grid-column: 1 / 4;
+    }
+
+    .sec-head .h2 {
+      grid-column: 1 / 9;
+      grid-row: 2;
+    }
+
+    .sec-head .intro {
+      grid-column: 9 / 13;
+      grid-row: 2;
+      align-self: end;
+    }
+  }
+</style>

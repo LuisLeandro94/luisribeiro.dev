@@ -1,0 +1,80 @@
+---
+import { roles, timelineTickYears } from "../content/experience";
+import { computeSegments, computeTicks } from "../utils/timeline";
+
+// `roles` is ordered newest-first (for the RoleRow list below, which opens
+// the current role by default). The track reads left-to-right as a real
+// timeline, so it needs the oldest role first — reverse just for this view.
+const chronological = [...roles]
+  .reverse()
+  .map((r) => ({ id: r.id, label: r.company, from: r.from, to: r.to, current: r.current }));
+
+// Computed at build time for the no-JS baseline; experience-track.ts refines
+// it on the client using the viewer's real "now" so a long-unbuilt deploy
+// doesn't quietly drift stale.
+const segments = computeSegments(chronological);
+const ticks = computeTicks(timelineTickYears, chronological);
+---
+
+<div class="track" aria-hidden="true">
+  <div class="bar" id="track">
+    {segments.map((seg) => (
+      <div
+        class:list={["seg", { now: seg.current }]}
+        data-from={seg.from}
+        data-to={seg.to}
+        style={`flex:${seg.months} 0 0`}
+      >
+        {seg.label}
+      </div>
+    ))}
+  </div>
+  <div class="ticks data" id="ticks">
+    {ticks.map((tick) => (
+      <span style={`left:${tick.position * 100}%`}>{tick.year}</span>
+    ))}
+  </div>
+</div>
+
+<style>
+  .track {
+    padding-top: var(--s-3);
+  }
+
+  .bar {
+    display: flex;
+    height: 28px;
+    margin-top: var(--s-3);
+    gap: 2px;
+  }
+
+  .seg {
+    position: relative;
+    background: var(--paper-2);
+    border-top: 2px solid var(--ink);
+    display: flex;
+    align-items: flex-end;
+    padding: 0 6px 4px;
+    font: 500 0.68rem var(--f-mono);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--graphite);
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
+  .seg.now {
+    border-color: var(--signal);
+    color: var(--ink);
+  }
+
+  .ticks {
+    position: relative;
+    height: 18px;
+    margin-top: 6px;
+  }
+
+  .ticks span {
+    position: absolute;
+  }
+</style>
