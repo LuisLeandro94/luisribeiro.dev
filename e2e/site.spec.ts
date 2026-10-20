@@ -65,6 +65,55 @@ test.describe("command menu", () => {
     await page.mouse.click(10, 10);
     await expect(page.locator("#cmd")).not.toBeVisible();
   });
+
+  // Regression test for a bug where command-menu.ts's dynamically created
+  // <li> elements (document.createElement) never matched CommandMenu.astro's
+  // scoped CSS, because Astro's compiler requires the component's
+  // data-astro-cid attribute on the *element itself*, not just an ancestor —
+  // an attribute only present on elements Astro renders at build time. The
+  // rows silently fell back to the UA default `display: list-item`, so the
+  // label and its metadata rendered as unstyled, overlapping inline text.
+  // Checking textContent alone would not catch this: the DOM and the text
+  // are both correct, only the layout is broken. This asserts actual
+  // computed style and geometry instead.
+  test("command rows use flex layout with non-overlapping label and metadata", async ({ page }) => {
+    await page.goto("/");
+    await page.keyboard.press("Control+k");
+
+    const row = page.locator("#cmdlist li[role=option]").first();
+    await expect(row).toBeVisible();
+
+    const display = await row.evaluate((el) => getComputedStyle(el).display);
+    expect(display).toBe("flex");
+
+    const label = row.locator("span").first();
+    const meta = row.locator("span.data");
+    const labelBox = await label.boundingBox();
+    const metaBox = await meta.boundingBox();
+    if (!labelBox || !metaBox) throw new Error("expected both spans to have a layout box");
+
+    // Metadata must sit to the right of the label with no horizontal overlap —
+    // the exact geometry a flex row with justify-content: space-between
+    // guarantees, and that `display: list-item` does not.
+    expect(metaBox.x).toBeGreaterThanOrEqual(labelBox.x + labelBox.width);
+
+    // Row must have real padding, not the UA default of 0.
+    const padding = await row.evaluate((el) => getComputedStyle(el).paddingTop);
+    expect(parseFloat(padding)).toBeGreaterThan(0);
+  });
+
+  test("the command menu fits within the viewport at every required width", async ({ page }) => {
+    for (const width of [320, 390, 768, 1024, 1440]) {
+      await page.setViewportSize({ width, height: 900 });
+      await page.goto("/");
+      await page.keyboard.press("Control+k");
+      const box = await page.locator("#cmd").boundingBox();
+      if (!box) throw new Error("expected the command dialog to have a layout box");
+      expect(box.x).toBeGreaterThanOrEqual(0);
+      expect(box.x + box.width).toBeLessThanOrEqual(width);
+      await page.keyboard.press("Escape");
+    }
+  });
 });
 
 test.describe("mobile index", () => {
