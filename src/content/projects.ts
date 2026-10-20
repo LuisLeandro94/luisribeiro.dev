@@ -43,6 +43,7 @@ export const featuredProject: FeaturedProject = {
   id: "w1",
   label: "Featured · Personal project",
   title: "Wedding Management App",
+  caseStudyHref: "/work/wedding-app",
   description:
     "The app that ran my own wedding: invitations, RSVPs, guest seating, administration and photo uploads. A full-stack Next.js and React build, with MongoDB for data, NextAuth for sign-in and Resend for transactional email.",
   spec: [

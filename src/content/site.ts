@@ -13,7 +13,7 @@ export const site = {
   description:
     "Luís Ribeiro is a software engineer in Portugal specialising in frontend. He builds interfaces for financial operations at VFX Financial.",
   url: "https://www.luisribeiro.dev",
-  email: "luisribeirotech@gmail.com",
+  email: "hello@luisribeiro.dev",
   location: "Portugal",
   timeZone: "Europe/Lisbon",
   linkedin: {

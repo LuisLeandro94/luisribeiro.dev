@@ -5,13 +5,13 @@ import { site, navSections } from "../content/site";
 <header class="site">
   <div class="wrap">
     <div class="g">
-      <a class="brand" href="#top" aria-label={`${site.name}, back to top`}>
+      <a class="brand" href="/#top" aria-label={`${site.name}, back to top`}>
         <b>{site.name}</b>
         <span>{site.role}</span>
       </a>
       <nav class="nav" aria-label="Sections">
         {navSections.map((section) => (
-          <a href={`#${section.id}`}>
+          <a href={`/#${section.id}`}>
             <span>{section.number}</span>
             {section.label}
           </a>

@@ -324,6 +324,16 @@ button {
   margin-top: clamp(40px, 6vw, 80px);
 }
 
+/* bounded media box: shared screenshot/canvas frame (ProjectCard, ProjectSheet, case studies) */
+.media {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  max-width: 100%;
+  background: var(--paper-2);
+  overflow: hidden;
+  border: 1px solid var(--rule);
+}
+
 /* spec list: mono key / value rows, shared by ProjectSheet and About */
 .spec {
   display: grid;

@@ -1,0 +1,305 @@
+---
+import { Image } from "astro:assets";
+import Layout from "../../layouts/Layout.astro";
+import SiteHeader from "../../components/SiteHeader.astro";
+import Footer from "../../components/Footer.astro";
+import CaseStudySection from "../../components/CaseStudySection.astro";
+import { featuredProject } from "../../content/projects";
+import { site } from "../../content/site";
+// Separately generated, tighter-framed derivative of the same screenshot used
+// on the homepage (featuredProject.media.main) — see src/assets/images for
+// the untouched original. Case study showcase only; the homepage card still
+// uses the original.
+import weddingHomeCropped from "../../assets/images/wedding-home-cropped.webp";
+
+const title = `${featuredProject.title} · Case study · ${site.name}`;
+const description = featuredProject.description;
+
+const specValue = (term: string) =>
+  featuredProject.spec.find((item) => item.term === term)?.value ?? "";
+
+const heroMeta = [
+  { term: "Role", value: specValue("Role") },
+  { term: "Type", value: "Personal project" },
+  { term: "Stack", value: specValue("Stack") },
+  { term: "Purpose", value: "Built and used for my own wedding" },
+];
+---
+
+<Layout title={title} description={description}>
+  <SiteHeader />
+  <main id="main" tabindex="-1">
+    <article class="case">
+      <div class="wrap">
+        <p class="back">
+          <a class="lnk" href="/#work">
+            <span class="ar" aria-hidden="true">
+              ←
+            </span>{" "}
+            Selected work
+          </a>
+        </p>
+
+        <div class="g hero-g">
+          <p class="label case-kicker">Case study · Personal project</p>
+          <h1 class="h2 case-title">{featuredProject.title}</h1>
+          <p class="lead case-intro">
+            A full-stack application built to manage my wedding, bringing invitations, RSVPs, guest
+            seating, and photo sharing together in one place.
+          </p>
+          <dl class="spec case-meta">
+            {heroMeta.map((item) => (
+              <>
+                <dt>{item.term}</dt>
+                <dd>{item.value}</dd>
+              </>
+            ))}
+          </dl>
+        </div>
+
+        <div class="g shot-g">
+          <figure class="shot">
+            <Image
+              src={weddingHomeCropped}
+              alt={featuredProject.media.main.alt}
+              widths={[320, 480, 640]}
+              sizes="(min-width: 1024px) 650px, 90vw"
+            />
+            <figcaption class="data">
+              Authenticated home screen with the wedding countdown and access to guest information
+              and event features.
+            </figcaption>
+          </figure>
+        </div>
+
+        <CaseStudySection heading="The problem">
+          <p class="body-2">
+            I wanted one application to handle wedding-related information, invitations, RSVPs,
+            seating arrangements and photo sharing — rather than stitching together generic
+            third-party tools. I built it myself, full-stack, and used it to run the actual event:
+            real guests signed in, RSVP'd and found their seats through it.
+          </p>
+        </CaseStudySection>
+
+        <CaseStudySection heading="Core functionality">
+          <ul class="features">
+            <li>
+              <p class="label">Authentication</p>
+              <p class="body-2">
+                Guests and administrators signed in through NextAuth, with Google as the provider.
+              </p>
+            </li>
+            <li>
+              <p class="label">Invitations &amp; RSVPs</p>
+              <p class="body-2">Guests received invitations and could RSVP through the app.</p>
+            </li>
+            <li class="has-shot">
+              <div>
+                <p class="label">Guest seating</p>
+                <p class="body-2">
+                  Guests could search for their own name to find their assigned table.
+                </p>
+              </div>
+              <figure class="shot shot-sm">
+                <Image
+                  src={featuredProject.media.sub.src}
+                  alt={featuredProject.media.sub.alt}
+                  widths={[280, 420, 560]}
+                  sizes="(min-width: 1024px) 320px, 70vw"
+                  loading="lazy"
+                />
+                <figcaption class="data">
+                  Guest seating interface, allowing attendees to find their assigned table by name.
+                </figcaption>
+              </figure>
+            </li>
+            <li>
+              <p class="label">Information &amp; protocol</p>
+              <p class="body-2">
+                Informações and Protocolo sections gave guests event details and practical
+                information in one place.
+              </p>
+            </li>
+            <li>
+              <p class="label">Photos</p>
+              <p class="body-2">
+                A Fotos and Galeria area let guests view and contribute photos from the event.
+              </p>
+            </li>
+            <li>
+              <p class="label">Administration</p>
+              <p class="body-2">
+                An administration area let me manage guests and send updates using the contact
+                details collected at sign-in.
+              </p>
+            </li>
+          </ul>
+        </CaseStudySection>
+
+        <CaseStudySection heading="Authentication challenge">
+          <p class="body-2">
+            One of the key implementation considerations was supporting authentication for both
+            guests and administrators. Guest sign-in made it possible to identify attendees, retain
+            their contact information, and communicate important wedding updates.
+          </p>
+        </CaseStudySection>
+
+        <CaseStudySection heading="Technology decisions">
+          <p class="body-2">
+            I chose Next.js, MongoDB and NextAuth mainly because I wanted hands-on experience with
+            that combination. The Wedding Management App was a real app I used to run my own
+            wedding, and at the same time a practical opportunity to learn by building something
+            real rather than a tutorial project.
+          </p>
+        </CaseStudySection>
+
+        <CaseStudySection heading="Outcome">
+          <p class="body-2">
+            The app ran my actual wedding: guests used it to RSVP, find their seats and share
+            photos. Beyond the event itself, it gave me hands-on, full-stack experience with
+            Next.js, MongoDB and NextAuth.
+          </p>
+        </CaseStudySection>
+
+        <p class="more">
+          <a class="lnk" href="/#work">
+            Back to selected work{" "}
+            <span class="ar" aria-hidden="true">
+              →
+            </span>
+          </a>
+        </p>
+      </div>
+    </article>
+  </main>
+  <Footer />
+</Layout>
+
+<style>
+  .case {
+    padding-top: var(--section);
+    padding-bottom: var(--s-9);
+  }
+
+  .back {
+    margin-bottom: var(--s-6);
+  }
+
+  /* hero */
+  .hero-g {
+    padding-top: var(--s-3);
+    row-gap: var(--s-4);
+  }
+
+  .case-title {
+    margin-top: var(--s-4);
+  }
+
+  .case-meta {
+    margin-top: var(--s-6);
+  }
+
+  @media (min-width: 1024px) {
+    .case-kicker {
+      grid-column: 1 / -1;
+    }
+
+    .case-title {
+      grid-column: 1 / 9;
+      grid-row: 2;
+    }
+
+    .case-intro {
+      grid-column: 1 / 9;
+      grid-row: 3;
+    }
+
+    .case-meta {
+      grid-column: 9 / 13;
+      grid-row: 2 / 4;
+      align-self: start;
+      margin-top: 0;
+    }
+  }
+
+  /* showcase */
+  .shot-g {
+    margin-top: var(--s-8);
+  }
+
+  .shot {
+    border: 1px solid var(--rule);
+    background: var(--paper-2);
+    box-shadow: 0 18px 40px -24px rgba(0, 0, 0, 0.45);
+  }
+
+  .shot :global(img) {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .shot figcaption {
+    margin-top: var(--s-3);
+    max-width: 60ch;
+  }
+
+  @media (min-width: 1024px) {
+    .shot-g > .shot {
+      /* 6 of 12 columns, symmetric — flush grid alignment, sized to match
+         the cropped derivative's native 640px width so it isn't upscaled */
+      grid-column: 4 / 10;
+    }
+  }
+
+  /* core functionality feature list */
+  .features {
+    border-top: 1px solid var(--rule);
+  }
+
+  .features li {
+    padding: var(--s-4) 0;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .features li > .label {
+    margin-bottom: 6px;
+  }
+
+  .features .body-2 {
+    max-width: 60ch;
+  }
+
+  .has-shot {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-4);
+  }
+
+  .has-shot .shot-sm {
+    max-width: 320px;
+  }
+
+  @media (min-width: 640px) {
+    .has-shot {
+      flex-direction: row;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: var(--s-5);
+    }
+
+    .has-shot > div {
+      flex: 1;
+    }
+
+    .has-shot .shot-sm {
+      flex: 0 0 auto;
+      width: 240px;
+    }
+  }
+
+  .more {
+    margin-top: var(--s-8);
+    font-size: var(--t-small);
+  }
+</style>

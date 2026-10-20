@@ -14,7 +14,13 @@ interface CommandItem {
 function goTo(id: string): () => void {
   const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   return () => {
-    document.getElementById(id)?.scrollIntoView({ behavior: reduce ? "auto" : "smooth" });
+    const target = document.getElementById(id);
+    if (target) {
+      target.scrollIntoView({ behavior: reduce ? "auto" : "smooth" });
+    } else {
+      // Not on the homepage (e.g. a case study page) — the section lives there instead.
+      window.location.href = `/#${id}`;
+    }
   };
 }
 

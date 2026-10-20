@@ -10,7 +10,7 @@ export function initActiveNav(): void {
         navLinks.forEach((link) => {
           link.setAttribute(
             "aria-current",
-            link.getAttribute("href") === `#${entry.target.id}` ? "true" : "false",
+            link.getAttribute("href") === `/#${entry.target.id}` ? "true" : "false",
           );
         });
       });

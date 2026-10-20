@@ -11,7 +11,7 @@ test.describe("navigation", () => {
     await page.setViewportSize({ width: 1280, height: 900 });
     await page.goto("/");
     await page.locator("#contact").scrollIntoViewIfNeeded();
-    await expect(page.locator('.nav a[href="#contact"]')).toHaveAttribute("aria-current", "true");
+    await expect(page.locator('.nav a[href="/#contact"]')).toHaveAttribute("aria-current", "true");
   });
 });
 
@@ -217,5 +217,90 @@ test.describe("accessibility baseline", () => {
     await expect(page.locator("h1")).toContainText("Luís");
     await expect(page.locator(".role-row").first()).toHaveAttribute("open", "");
     await context.close();
+  });
+});
+
+test.describe("wedding app case study", () => {
+  test("loads directly with the project title and both screenshots", async ({ page }) => {
+    await page.goto("/work/wedding-app");
+    await expect(page.locator("h1")).toHaveText("Wedding Management App");
+    await expect(page.locator(".shot img")).toHaveCount(2);
+  });
+
+  test("shows the structured metadata block", async ({ page }) => {
+    await page.goto("/work/wedding-app");
+    const terms = await page.locator(".case-meta dt").allTextContents();
+    expect(terms).toEqual(["Role", "Type", "Stack", "Purpose"]);
+  });
+
+  test("the back link returns to the homepage Selected Work section", async ({ page }) => {
+    await page.goto("/work/wedding-app");
+    await page.locator(".back a").click();
+    await expect(page).toHaveURL(/\/#work$/);
+    await expect(page.locator("#work")).toBeInViewport();
+  });
+
+  test("header nav links navigate back to the homepage from a subpage", async ({ page }) => {
+    await page.setViewportSize({ width: 1280, height: 900 });
+    await page.goto("/work/wedding-app");
+    await page.getByRole("link", { name: /03.*Stack/i }).click();
+    await expect(page).toHaveURL(/\/#stack$/);
+    await expect(page.locator("#stack")).toBeInViewport();
+  });
+
+  test("no horizontal overflow at 390px", async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 900 });
+    await page.goto("/work/wedding-app");
+    const overflow = await page.evaluate(
+      () => document.documentElement.scrollWidth - document.documentElement.clientWidth,
+    );
+    expect(overflow).toBe(0);
+  });
+
+  test("covers all expected narrative sections in order", async ({ page }) => {
+    await page.goto("/work/wedding-app");
+    const headings = await page.locator(".cs-h").allTextContents();
+    expect(headings).toEqual([
+      "The problem",
+      "Core functionality",
+      "Authentication challenge",
+      "Technology decisions",
+      "Outcome",
+    ]);
+  });
+
+  test("pairs the guest seating feature with its screenshot", async ({ page }) => {
+    await page.goto("/work/wedding-app");
+    const seatingItem = page.locator(".features li", { hasText: "Guest seating" });
+    await expect(seatingItem.locator("img")).toHaveCount(1);
+  });
+
+  test('the homepage "Read the case study" link opens the case study', async ({ page }) => {
+    await page.goto("/");
+    await page.getByRole("link", { name: /Read the case study/ }).click();
+    await expect(page).toHaveURL(/\/work\/wedding-app$/);
+    await expect(page.locator("h1")).toHaveText("Wedding Management App");
+  });
+
+  test("mobile index navigates from the case study page back to a homepage section", async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto("/work/wedding-app");
+    await page.locator("[data-open-idx]").click();
+    await page.getByRole("dialog").getByRole("link", { name: /About/ }).click();
+    await expect(page).toHaveURL(/\/#about$/);
+    await expect(page.locator("#about")).toBeInViewport();
+  });
+
+  test("command menu navigates from the case study page back to a homepage section", async ({
+    page,
+  }) => {
+    await page.goto("/work/wedding-app");
+    await page.keyboard.press("Control+k");
+    await page.keyboard.type("contact");
+    await page.keyboard.press("Enter");
+    await expect(page).toHaveURL(/\/#contact$/);
+    await expect(page.locator("#contact")).toBeInViewport();
   });
 });

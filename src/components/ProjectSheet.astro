@@ -45,7 +45,7 @@ const { project } = Astro.props;
       <div class="links">
         {project.caseStudyHref && (
           <a class="lnk" href={project.caseStudyHref}>
-            Case study{" "}
+            Read the case study{" "}
             <span class="ar" aria-hidden="true">
               →
             </span>
@@ -68,19 +68,6 @@ const { project } = Astro.props;
   .sheet {
     padding-top: var(--s-4);
     row-gap: var(--s-6);
-  }
-
-  .media {
-    position: relative;
-    aspect-ratio: 16 / 10;
-    max-width: 100%;
-    background: var(--paper-2);
-    overflow: hidden;
-    border: 1px solid var(--rule);
-  }
-
-  .media.shots {
-    background: var(--paper-2);
   }
 
   .media.shots :global(img) {
